@@ -29,6 +29,8 @@ O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C qu
 
 [6] Salvar e Sair 💾
 
+![image](https://github.com/user-attachments/assets/38d642ad-7eeb-47d1-9f91-8fd372f93862)
+
 3️⃣ Processamento da escolha do usuário
 
 O programa executa a ação conforme a opção escolhida.
