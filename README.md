@@ -40,15 +40,9 @@ O programa executa a ação conforme a opção escolhida.
 1️⃣ Baixe o código-fonte do projeto.
 2️⃣ Compile o código utilizando um compilador C (como GCC):
 
-bash
-Copiar
-Editar
 gcc diario_financeiro.c -o diario_financeiro
 3️⃣ Execute o programa no terminal:
 
-bash
-Copiar
-Editar
 ./diario_financeiro
 🔧 Tecnologias Utilizadas
 📌 Linguagem: C
