@@ -1,11 +1,11 @@
 📌 README – Diário Financeiro Pessoal
 
-🏆 Sobre o Projeto:
+# 🏆 Sobre o Projeto:
 
 O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C que permite controlar receitas e despesas, visualizar o saldo atual e gerar relatórios detalhados. Com suporte a múltiplos idiomas (Português, Inglês e Francês), ele oferece uma interface simples e eficiente para facilitar o controle financeiro.
 
-🔹 Objetivo: Criar um sistema prático e rápido para acompanhar ganhos e gastos.
-🔹 Público-Alvo: Qualquer pessoa que deseja melhorar sua organização financeira.
+# 🔹 Objetivo: Criar um sistema prático e rápido para acompanhar ganhos e gastos.
+# 🔹 Público-Alvo: Qualquer pessoa que deseja melhorar sua organização financeira.
 
 🛠 Funcionalidades Principais
 ✔ Cadastro de receitas e despesas – Registre suas transações facilmente.
@@ -15,7 +15,7 @@ O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C qu
 ✔ Interface intuitiva – Menu interativo e fácil de usar.
 ✔ Salvamento de dados – Registros armazenados para consultas futuras.
 
-📜 Fluxo de Funcionamento
+# 📜 Fluxo de Funcionamento
 1️⃣ Início – O usuário inicia o programa e acessa o menu.
 2️⃣ Menu Principal:
 
