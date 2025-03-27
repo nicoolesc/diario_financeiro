@@ -36,14 +36,14 @@ O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C qu
 O programa executa a ação conforme a opção escolhida.
 4️⃣ Retorno ao menu ou finalização do programa
 
-🚀 Como Executar o Programa
-1️⃣ Baixe o código-fonte do projeto.
-2️⃣ Compile o código utilizando um compilador C (como GCC):
+# 1️⃣ Baixe o código-fonte do projeto.
 
+# 2️⃣ Compile o código utilizando um compilador C (como GCC):
 gcc diario_financeiro.c -o diario_financeiro
-3️⃣ Execute o programa no terminal:
 
+# 3️⃣ Execute o programa no terminal:
 ./diario_financeiro
+
 🔧 Tecnologias Utilizadas
 📌 Linguagem: C
 📌 Compilador: GCC
