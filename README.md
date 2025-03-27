@@ -1,4 +1,4 @@
-📌 README – Diário Financeiro Pessoal
+# 📌 README – Diário Financeiro Pessoal
 
 # 🏆 Sobre o Projeto:
 
