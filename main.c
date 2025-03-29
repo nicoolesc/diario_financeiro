@@ -24,6 +24,7 @@ Se [4]: Exibir lista de transações e gerar gráficos ASCII ou arquivos CSV.
 4️⃣ Retornar ao menu ou sair do programa
 *******************************************************************************/
 #include <stdio.h>
+#include <stdlib>
 
 // Função que limpa a tela
 void limparTela() {
