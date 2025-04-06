@@ -18,6 +18,7 @@ O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C qu
 # 📜 Fluxo de Funcionamento
 1️⃣ Início – O usuário inicia o programa e acessa o menu.
 2️⃣ Menu Principal:
+![image](https://github.com/user-attachments/assets/38d642ad-7eeb-47d1-9f91-8fd372f93862)
 
 [1] Cadastrar Receita 🟢
 
@@ -31,7 +32,9 @@ O Diário Financeiro Pessoal é um gerenciador de finanças desenvolvido em C qu
 
 [6] Salvar e Sair 💾
 
-![image](https://github.com/user-attachments/assets/38d642ad-7eeb-47d1-9f91-8fd372f93862)
+![Green White Modern Professional Business Order Flowchart Graph](https://github.com/user-attachments/assets/588e2c78-a0e7-464d-a06d-bbc1413f379c)
+
+
 
 3️⃣ Processamento da escolha do usuário
 
