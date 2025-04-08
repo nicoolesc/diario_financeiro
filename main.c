@@ -39,35 +39,34 @@ permitindo a continuidade do controle financeiro. (  )
 #include <unistd.h>
 #include <math.h>
 
-// Função que limpa a tela
-void limparTela() {
-    #ifdef _WIN32
-        system("cls");  // Para Windows
-    #else
-        system("clear");  // Para Linux/Mac
-    #endif
-}
+// Rol de funções:
+void limparTela(); // Função que limpa a tela 
+void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes); // Função que exibe menus (útil para vários idiomas) 
+int lerCategoriaReceita(); // Exibe o menu de categorias 
+void registrarTransacao(int* total, int* transacao, int* categoria, const char* tipo); // Exibe o total atual da transação (receita ou despesa) formatado
 
 int main() {
-    int opcao, categoria, option = 0;
+    int categoria = 0, option = 0, opcao = 0, transacao = 0;
+    int num_opcoes = 6;
     int subOpcao = 1;
-    int receita_total = 0, receita = 0, despesa_total = 0, despesa = 0;
-
+    int receita_total = 0, receita = 0, despesa_total =0, despesa = 0;
+    const char* titulo = "Menu Principal";
+    const char* opcoes[] = {
+        "Cadastrar Receita",
+        "Cadastrar Despesa",
+        "Exibir Saldo",
+        "Gerar Relatorio",
+        "Alterar Idioma",
+        "Salvar & Sair"
+    };
+    
+    opcao = 0;
     while (opcao != 6) {
-        limparTela();
-        printf("+_+_+_+_+_+_+_+== CARTEIRA DIGITAL ==+_+_+_+_++_+_+_+_+_+_+_\n"); 
-        printf("  \n");
-        printf(" Bem vindo, Carlos, a sua CARTEIRA DIGITAL em Canadian Dollar.\n Escolha a opcao desejada: \n");
-        printf("   [ 1 ] Cadastrar Receita\n");
-        printf("   [ 2 ] Cadastrar Despesa\n");
-        printf("   [ 3 ] Exibir Saldo\n");
-        printf("   [ 4 ] Gerar Relatorio\n");
-        printf("   [ 5 ] Alterar Idioma [FR] [EN]\n");
-        printf("   [ 6 ] SALVAR & SAIR\n");
-        printf("Qual eh a sua opcao: ");
+        exibirMenu(titulo, opcoes, num_opcoes);      
+        // Solicita a escolha do usuário
+        printf("\nEscolha uma opcao: ");
         scanf("%d", &opcao);
-        
-        
+
         switch(opcao) {
         case 1:
                 /*O sistema deve permitir o registro de transações financeiras, com as seguintes informações:
@@ -76,34 +75,19 @@ int main() {
                 ■ Valor da transação
                 ■ Descrição (opcional, para detalhar a transação)
                 ■ Categorias*/
-                subOpcao = 1;
-            while (subOpcao != 2){
-                limparTela();
-                int categoria;
-                printf("Sua conta atual possui %d.%02d CAD\n", receita_total / 100, receita_total % 100);
-                printf("Digite sua receita mensal em CAD (ex: 1050 para 10.50 CAD): ");
-                scanf("%i", &receita );
-                receita_total += receita;
-                printf("\nE qual eh a categoria da receita? \n");
-                printf("    [ 1 ] BOLSA DE INTERCAMBIO \n");
-                printf("    [ 2 ] ESTAGIO NA STARTUP \n");
-                printf("    [ 3 ] MESADA DA MAMAE (recebida em CAD) \n");
-                printf("    [ 4 ] OUTROS\n");
-                printf("Qual eh a sua opcao: ");
-                scanf("%d", &categoria);  
-                if (categoria == 1 || categoria == 2 || categoria == 3 || categoria == 4 ){
-                    printf("\n+_+_+_+_+_+_+_+_+_+ == RECEITA == +_+_+_+_+_+_++_+_+_+_+_+_\n"); 
-                    printf("  \n");       
-                    printf("\nSua conta atual possui X RECEITAS no montante de %i.%02i CAD \ncadastradas na categoria %i\n", receita_total / 100, receita_total % 100, categoria);
-                    printf("  \n");
-                }else{
-                    printf("Opcao invalida!\n");
+                // Cadastrar Receita
+                subOpcao = 1; // Inicia o loop para registrar a receita
+                while (subOpcao != 2) {
+                    //int* total = 129;
+                    limparTela();
+                    registrarTransacao(&receita_total, &transacao, categoria, "receita");
+                                  
+            
+                    // Pergunta ao usuário se ele quer continuar ou sair
+                    printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
+                    scanf("%d", &subOpcao);
                 }
-                             
-                printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
-                scanf("%d", &subOpcao);
-            }  
-                break;
+            break;
         case 2:
                  /*O sistema deve permitir o registro de transações financeiras, com as seguintes informações:
                 ■ Data da transação (dia, mês, ano)
@@ -113,22 +97,24 @@ int main() {
                 ■ Categorias*/
                 subOpcao = 1;
                 while (subOpcao != 2){
-                limparTela();
-                printf("+_+_+_+_+_+_+_+_+== DESPESAS ==+_+_+_+_+_+_+_+_+_+_+_\n"); 
-                printf("  \n");
-                printf("Sua despesa total eh de %i.%02i CAD\n", despesa_total / 100, despesa_total % 100);
-                printf("Digite sua despesa em CAD (ex: 750 para 7.50): ");
-                scanf("%i", &despesa );
-                despesa_total = despesa_total + despesa;
-                
-                printf("\nE qual eh a categoria da despesa? \n");
-                printf("    [ 1 ] ALIMENTACAO RESTAURANT FRANCES\n");
-                printf("    [ 2 ] TRANSPORTE DE UBER\n");
-                printf("    [ 3 ] ALUGUEL DO FLAT\n");
-                printf("    [ 4 ] ACADEMIA DO FLAT\n");
-                printf("    [ 5 ] BOATE\n");
-                printf("Qual eh a sua opcao: ");
-                scanf("%i", &categoria); 
+                    limparTela();
+                    registrarTransacao(&receita_total, &transacao, categoria, "receita");
+                    printf("+_+_+_+_+_+_+_+_+== DESPESAS ==+_+_+_+_+_+_+_+_+_+_+_\n"); 
+                    printf("  \n");
+                    printf("Sua despesa total eh de %i.%02i CAD\n", despesa_total / 100, despesa_total % 100);
+                    printf("Digite sua despesa em CAD (ex: 750 para 7.50): ");
+                    scanf("%i", &despesa );
+                    
+                    
+                    
+                    printf("\nE qual eh a categoria da despesa? \n");
+                    printf("    [ 1 ] ALIMENTACAO RESTAURANT FRANCES\n");
+                    printf("    [ 2 ] TRANSPORTE DE UBER\n");
+                    printf("    [ 3 ] ALUGUEL DO FLAT\n");
+                    printf("    [ 4 ] ACADEMIA DO FLAT\n");
+                    printf("    [ 5 ] BOATE\n");
+                    printf("Qual eh a sua opcao: ");
+                    scanf("%i", &categoria); 
                 if (categoria == 1 || categoria == 2 || categoria == 3 || categoria == 4 || categoria ==5 ){
                     printf("\nSua conta atual possui X DESPESAS no montante de %i.%02i CAD \ncadastradas na categoria %i\n", despesa_total / 100, despesa_total % 100, categoria);
                     printf("  \n");
@@ -266,5 +252,85 @@ int main() {
             printf("OPCAO INVALIDA!");
     }
     }
+    return 0;
+}
+
+
+// Função que limpa a tela
+void limparTela() {
+    #ifdef _WIN32
+        system("cls");  // Para Windows
+    #else
+        system("clear");  // Para Linux/Mac
+    #endif
+}
+void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes) {
+    // Limpa a tela antes de mostrar o menu
+    limparTela();  
+
+    // Exibe uma linha decorada com o título "CARTEIRA DIGITAL"
+    printf("+_+_+_+_+_+_+_+== CARTEIRA DIGITAL ==+_+_+_+_++_+_+_+_+_+_+_\n");
+
+    // Exibe uma linha em branco para separar a linha decorada do texto seguinte
+    printf("  \n");
+
+    // Exibe uma mensagem de boas-vindas, especificando o nome do usuário e a moeda
+    printf(" Bem vindo, Carlos, a sua CARTEIRA DIGITAL em Canadian Dollar.\n Escolha a opcao desejada: \n");
+
+    // Exibe uma linha em branco para separar a mensagem de boas-vindas do título
+    printf("  \n");
+
+    // Exibe o título do menu, que é passado como argumento para a função (por exemplo, "Menu Principal")
+    printf(" %s\n\n", titulo);  
+
+    // Início do loop para exibir as opções do menu
+    for (int i = 0; i < num_opcoes; i++) {
+        // Para cada opção, imprime o número da opção (começando de 1) e o texto correspondente à opção
+        printf(" [ %d ] %s\n", i + 1, opcoes[i]);  // Imprime as opções com seus respectivos números
+    }
+}
+
+int lerCategoriaReceita() {
+    int categoria;
+    
+    // Exibe o menu de categorias
+    printf("\nE qual eh a categoria da receita? \n");
+    printf("    [ 1 ] BOLSA DE INTERCAMBIO\n");
+    printf("    [ 2 ] ESTAGIO NA STARTUP\n");
+    printf("    [ 3 ] MESADA DA MAMAE (recebida em CAD)\n");
+    printf("    [ 4 ] FREELANCE\n");
+    printf("    [ 5 ] OUTROS\n");
+    
+    // Laço para garantir que o usuário insira uma categoria válida
+    int subOpcao = 1; // Inicia o loop para registrar a receita
+    while (subOpcao != 2){
+        printf("Qual eh a sua opcao: ");
+        scanf("%i", &categoria);  // Lê a categoria
+
+        // Verifica se a categoria inserida é válida (1 a 5)
+        if (categoria >= 1 && categoria <= 5) {
+           return categoria;  // Retorna a categoria válida
+        } else {
+            // Exibe mensagem de erro e pede para tentar novamente
+            printf("Opcao invalida! Por favor, insira um numero entre 1 e 5.\n");
+        }
+        
+    }
+    return 0;
+}
+void registrarTransacao(int* total, int* transacao, int* categoria, const char* tipo) {
+    // Exibe o total atual da transação (receita ou despesa) formatado
+    printf("Sua %s total eh de %i.%02i CAD\n", tipo, *total / 100, *total % 100);
+    
+    // Solicita o valor da transação ao usuário
+    printf("Digite o valor da %s (ex: 750 para $7.50 CAD): ", tipo);
+    scanf("%i", transacao);  // Lê o valor da transação
+
+    // Atualiza o total com o valor da transação inserido
+    *total += *transacao;
+    printf("\nSua conta atual possui X DESPESAS no montante de $%i.%02i CAD\n", *total / 100, *total % 100);
+    // Pergunta sobre a categoria da transação
+    printf("\nE qual eh a categoria da %s? \n", tipo);
+    *categoria = lerCategoriaReceita();       
     return 0;
 }
