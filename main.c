@@ -1,6 +1,5 @@
 /******************************************************************************
 DIARIO FINANCEIRO PESSOAL (PROJETO 9)
-ALUNOS: GABRIEL, JOHNATAN, MATHEUS, NICOLE, **PEDRO
 Data de criação: 27 mar 2025.
 REPOSITÓRIO DO CÓDIGO: https://github.com/johnatanwillow/diario_financeiro
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
