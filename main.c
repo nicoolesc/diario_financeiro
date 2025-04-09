@@ -39,18 +39,21 @@ permitindo a continuidade do controle financeiro. (  )
 #include <unistd.h>
 #include <math.h>
 
-// Rol de funções:
-void limparTela(); // Função que limpa a tela 
-void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes); // Função que exibe menus (útil para vários idiomas) 
-int lerCategoriaReceita(); // Exibe o menu de categorias 
-void registrarTransacao(int* total, int* transacao, int* categoria, const char* tipo); // Exibe o total atual da transação (receita ou despesa) formatado
+// Rol de funções: 
+void limparTela();
+void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes);
+int lerCategoriaReceita();
+int lerValor(const char* tipo);
+void registrarTransacao(int* total, int* transacao, int* categoria, const char* tipo);
+void exibirSaldo(int receita_total, int despesa_total);
+void exibirRelatorio(int receita_total, int despesa_total);
 
 int main() {
     int categoria = 0, option = 0, opcao = 0, transacao = 0;
     int num_opcoes = 6;
     int subOpcao = 1;
     int receita_total = 0, receita = 0, despesa_total =0, despesa = 0;
-    const char* titulo = "Menu Principal";
+    const char* titulo = "Bem-vindo a sua CARTEIRA DIGITAL em Canadian Dollar.\nMenu Principal\nEscolha a opcao desejada:";
     const char* opcoes[] = {
         "Cadastrar Receita",
         "Cadastrar Despesa",
@@ -134,23 +137,9 @@ int main() {
             ■ As receitas aumentam o saldo e as despesas diminuem.
             ○ O sistema deve permitir ao usuário cadastrar uma meta financeira mensal.*/
             limparTela();
-            int saldo = receita_total - despesa_total;
-            printf("+---------------------------+\n");
-            printf("|       SALDO ATUAL         |\n");
-            printf("+---------------------------+\n");
-            printf("| Receitas Totais: %i.%02i CAD |\n", receita_total / 100, receita_total % 100);
-            printf("| Despesas Totais: %i.%02i CAD |\n", despesa_total / 100, despesa_total % 100);
-            printf("|---------------------------|\n");
-            printf("| Saldo Final:    %s%i.%02i CAD  |\n", saldo < 0 ? "-" : " ", abs(saldo) / 100, abs(saldo) % 100);
-            printf("+---------------------------+\n");
+            exibirSaldo(receita_total, despesa_total);
+                       
             
-            if (saldo > 0) {
-                printf("\nPARABENS! Voce esta no positivo!\n");
-            } else if (saldo < 0) {
-                printf("\nATENCAO! Voce esta no vermelho!\n");
-            } else {
-                printf("\nSeu saldo esta zerado.\n");
-            }
             printf("\n+_+_+_+_+_+_+_+_+ == META FINANCEIRA == +_+_+_+_+_+_+_+_+_+_+_\n"); 
             printf("Deseja cadastrar uma meta financeira?\n");
             printf("Digite [ 1 ] para SIM || Digite [ 2 ] para Sair: ");
@@ -177,75 +166,72 @@ int main() {
             ■ Movimentação diária: lista de todas as transações de um dia específico.
             ■ Movimentação mensal: lista de todas as transações de um mês específico.
             ○ O sistema deve exibir gráficos de fluxo de caixa usando caracteres ASCII no console.*/
-        while (subOpcao != 2){
-            limparTela();
-            printf("+_+_+_+_+_+_+_+_+== RELATORIO FINANCEIRO ==+_+_+_+_+_+_+_+_+_+_+_\n"); 
-            printf("  \n");
-            int saldo = receita_total - despesa_total;
-            printf("\n=== RELATORIO FINANCEIRO ===\n");
-            printf("Total de Receitas: %i.%02i CAD\n", receita_total / 100, receita_total % 100);
-            printf("Total de Despesas: %i.%02i CAD\n", despesa_total / 100, despesa_total % 100);
-            printf("Saldo Final: %i.%02i CAD\n", saldo / 100, saldo % 100);
-            printf("============================\n");                 
-        
-            printf(" Gerar Relatorio\n");
-            printf("Escolha uma opcao:\n");
-            printf("1 - Exibir no Console\n");
-            printf("2 - Salvar Relatorio\n");
-            printf("Escolha: ");
-            scanf("%i", &opcao);
-        
-            if (opcao == 1 || opcao == 2) {
-                printf("gerarRelatorio(receita_total, despesa_total)");
-            } else {
-                printf("OPCAO INVALIDA!\n");
+            while (subOpcao != 2) {
+                limparTela();
+                exibirRelatorio(receita_total, despesa_total);
+                printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
+                scanf("%d", &subOpcao);
             }
-            printf("  \n");
-            printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
-            scanf("%i", &subOpcao);
-        }
             break;
         case 5:
-            limparTela();
-            printf("    [ 1 ] Francais\n");
-            printf("    [ 2 ] English\n");
-            printf("Choisissez/Choose: ");
-            scanf("%d", &option);
-            if(option == 1){
-                while (option != 6) {
-                    limparTela();
-                    printf("Bienvenue sur l'application WILLOW.\n");
-                    printf("    [ 1 ] Enregistrer un revenu\n");
-                    printf("    [ 2 ] Enregistrer une dEpense\n");
-                    printf("    [ 3 ] Afficher le solde\n");
-                    printf("    [ 4 ] GEnErer un rapport\n");
-                    printf("    [ 5 ] Changer de langue\n");
-                    printf("    [ 6 ] ENREGISTRER & QUITTER\n");
-                    printf("Quelle est votre option : ");
-                    scanf("%d", &option);
-                }
-            }if(option == 2){
-                while (option != 6) {
-                    limparTela();
-                    printf("Welcome to the WILLOW APP.\n");
-                    printf("    [ 1 ] Register Income\n");
-                    printf("    [ 2 ] Register Expense\n");
-                    printf("    [ 3 ] Display Balance\n");
-                    printf("    [ 4 ] Generate Report\n");
-                    printf("    [ 5 ] Change Language\n");
-                    printf("    [ 6 ] SAVE & EXIT\n");
-                    printf("What is your choice: ");
-                    scanf("%d", &option);
-                }  
-            }else{
-                printf("\nOpcao invalida!\n");
+        
+        limparTela();
+        printf("    [ 1 ] Francais\n");
+        printf("    [ 2 ] English\n");
+        printf("Choisissez/Choose: ");
+        scanf("%d", &option);
+    
+        if(option == 1){
+            while (option != 6) {
+                limparTela();
+                const char* titulo = "Bienvenue sur l'application WILLOW\n      ***MENU***";
+                const char* opcoes[] = {
+                    "Enregistrer un revenu",
+                    "Enregistrer une dEpense",
+                    "Afficher le solde",
+                    "GEnErer un rapport",
+                    "Changer de langue",
+                    "ENREGISTRER & QUITTER"
+                };
+                int num_opcoes = 6;
+                exibirMenu(titulo, opcoes, num_opcoes);  // Aqui estamos chamando a função exibirMenu
+                printf("Choisissez une option : ");
+                scanf("%d", &option);
             }
-            break;
+        }
+        else if(option == 2){
+            while (option != 6) {
+                limparTela();
+                const char* titulo = "Welcome to the WILLOW APP\n       ***MENU***";
+                const char* opcoes[] = {
+                    "Register Income",
+                    "Register Expense",
+                    "Display Balance",
+                    "Generate Report",
+                    "Change Language",
+                    "SAVE & EXIT"
+                };
+                int num_opcoes = 6;
+                exibirMenu(titulo, opcoes, num_opcoes);  // Aqui também chamamos a função exibirMenu
+                printf("What is your choice: ");
+                scanf("%d", &option);
+            }
+        }
+        else{
+            printf("\nOpcao invalida!\n");
+        }
+        break;
+    
         case 6:
             limparTela();
+            
             printf("\n+=+=+=+=+=+=+=+=+=+=+=+=+=\nAguarde...\n");
             sleep(3);
-            printf("\nAu revoir! Obrigado por interagir. Volte sempre!\n");
+            printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
+            printf("\nA bientot ! Merci d'avoir interagi. Reviens quand tu veux.\n");
+            printf("\nSee you soon! Thanks for interacting. Come back anytime.\n");
+            
+            
             break;
         default:
             limparTela();
@@ -265,72 +251,73 @@ void limparTela() {
     #endif
 }
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes) {
-    // Limpa a tela antes de mostrar o menu
-    limparTela();  
-
-    // Exibe uma linha decorada com o título "CARTEIRA DIGITAL"
-    printf("+_+_+_+_+_+_+_+== CARTEIRA DIGITAL ==+_+_+_+_++_+_+_+_+_+_+_\n");
-
-    // Exibe uma linha em branco para separar a linha decorada do texto seguinte
-    printf("  \n");
-
-    // Exibe uma mensagem de boas-vindas, especificando o nome do usuário e a moeda
-    printf(" Bem vindo, Carlos, a sua CARTEIRA DIGITAL em Canadian Dollar.\n Escolha a opcao desejada: \n");
-
-    // Exibe uma linha em branco para separar a mensagem de boas-vindas do título
-    printf("  \n");
-
-    // Exibe o título do menu, que é passado como argumento para a função (por exemplo, "Menu Principal")
-    printf(" %s\n\n", titulo);  
-
-    // Início do loop para exibir as opções do menu
+    limparTela();
+    printf("+_+== CARTEIRA DIGITAL ==+_+_\n");
+    printf(" \n");
+    printf("%s\n", titulo);
     for (int i = 0; i < num_opcoes; i++) {
-        // Para cada opção, imprime o número da opção (começando de 1) e o texto correspondente à opção
-        printf(" [ %d ] %s\n", i + 1, opcoes[i]);  // Imprime as opções com seus respectivos números
+        printf(" [ %d ] %s\n", i + 1, opcoes[i]);
     }
 }
 
 int lerCategoriaReceita() {
     int categoria;
-    
-    // Exibe o menu de categorias
-    printf("\nE qual eh a categoria da receita? \n");
-    printf("    [ 1 ] BOLSA DE INTERCAMBIO\n");
-    printf("    [ 2 ] ESTAGIO NA STARTUP\n");
-    printf("    [ 3 ] MESADA DA MAMAE (recebida em CAD)\n");
-    printf("    [ 4 ] FREELANCE\n");
-    printf("    [ 5 ] OUTROS\n");
-    
-    // Laço para garantir que o usuário insira uma categoria válida
-    int subOpcao = 1; // Inicia o loop para registrar a receita
-    while (subOpcao != 2){
-        printf("Qual eh a sua opcao: ");
-        scanf("%i", &categoria);  // Lê a categoria
-
-        // Verifica se a categoria inserida é válida (1 a 5)
+    printf("+_+== CARTEIRA DIGITAL ==+_+_\n");
+    printf("\nEscolha a categoria: \n");
+    printf(" [ 1 ] Bolsa de Intercâmbio\n");
+    printf(" [ 2 ] Estágio na Startup\n");
+    printf(" [ 3 ] Mesada da Mamãe\n");
+    printf(" [ 4 ] Freelance\n");
+    printf(" [ 5 ] Outros\n");
+    while (1) {
+        printf("Sua escolha: ");
+        scanf("%d", &categoria);
         if (categoria >= 1 && categoria <= 5) {
-           return categoria;  // Retorna a categoria válida
+            return categoria;
         } else {
-            // Exibe mensagem de erro e pede para tentar novamente
-            printf("Opcao invalida! Por favor, insira um numero entre 1 e 5.\n");
+            printf("Opção inválida! Tente novamente.\n");
         }
-        
     }
-    return 0;
+}
+int lerValor(const char* tipo) {
+    int valor;
+    printf("Digite o valor da %s (ex: 750 para $7.50): ", tipo);
+    scanf("%d", &valor);
+    return valor;
 }
 void registrarTransacao(int* total, int* transacao, int* categoria, const char* tipo) {
-    // Exibe o total atual da transação (receita ou despesa) formatado
-    printf("Sua %s total eh de %i.%02i CAD\n", tipo, *total / 100, *total % 100);
-    
-    // Solicita o valor da transação ao usuário
-    printf("Digite o valor da %s (ex: 750 para $7.50 CAD): ", tipo);
-    scanf("%i", transacao);  // Lê o valor da transação
-
-    // Atualiza o total com o valor da transação inserido
+    printf("Sua %s total é de %i.%02i CAD\n", tipo, *total / 100, *total % 100);
+    *transacao = lerValor(tipo);
     *total += *transacao;
-    printf("\nSua conta atual possui X DESPESAS no montante de $%i.%02i CAD\n", *total / 100, *total % 100);
-    // Pergunta sobre a categoria da transação
-    printf("\nE qual eh a categoria da %s? \n", tipo);
-    *categoria = lerCategoriaReceita();       
-    return 0;
+    *categoria = lerCategoriaReceita();
+}
+
+void exibirSaldo(int receita_total, int despesa_total) {
+    int saldo = receita_total - despesa_total;
+    printf("+_+== CARTEIRA DIGITAL ==+_+_\n");
+    printf("+---------------------------+\n");
+    printf("|       SALDO ATUAL         |\n");
+    printf("+---------------------------+\n");
+    printf("| Receitas Totais: %i.%02i CAD |\n", receita_total / 100, receita_total % 100);
+    printf("| Despesas Totais: %i.%02i CAD |\n", despesa_total / 100, despesa_total % 100);
+    printf("|---------------------------|\n");
+    printf("| Saldo Final: %s%i.%02i CAD  |\n", saldo < 0 ? "-" : " ", abs(saldo) / 100, abs(saldo) % 100);
+    printf("+---------------------------+\n");
+
+    if (saldo > 0) {
+        printf("\nPARABENS! Voce esta no positivo!\n");
+    } else if (saldo < 0) {
+        printf("\nATENCAO! Voce esta no vermelho!\n");
+    } else {
+        printf("\nSeu saldo esta zerado.\n");
+    }
+}
+
+void exibirRelatorio(int receita_total, int despesa_total) {
+    int saldo = receita_total - despesa_total;
+    printf("_+_+== CARTEIRA DIGITAL ==+_+_\n");
+    printf("_+_+== RELATÓRIO FINANCEIRO ==+_+\n");
+    printf("Total de Receitas: %i.%02i CAD\n", receita_total / 100, receita_total % 100);
+    printf("Total de Despesas: %i.%02i CAD\n", despesa_total / 100, despesa_total % 100);
+    printf("Saldo Final: %i.%02i CAD\n", saldo / 100, saldo % 100);
 }
