@@ -44,7 +44,7 @@ void limparTela();
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes);
 int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes);
 int lerValor(const char* tipo);
-void lerTransacao(int* total, int transacao, const char* tipo);
+void exibirTransacao(int* total, int transacao, const char* tipo);
 void exibirSaldo(int receita_total, int despesa_total);
 void exibirRelatorio(int receita_total, int despesa_total);
 void french();
@@ -99,7 +99,7 @@ int main() {
                 };
                 int num_opcoes = 5; // Número de categorias
                 // Registrar a transação de despesa
-                lerTransacao(&receita_total, transacao, "RECEITA");
+                exibirTransacao(&receita_total, transacao, "RECEITA");
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -140,7 +140,7 @@ int main() {
                 };
                 int num_opcoes = 6; // Número de categorias
                 // Registrar a transação de despesa
-                lerTransacao(&despesa_total, transacao, "DESPESA");
+                exibirTransacao(&despesa_total, transacao, "DESPESA");
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -271,7 +271,7 @@ int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes) {
 }
 
 // Função para registrar transações
-void lerTransacao(int* total, int transacao, const char* tipo) {
+void exibirTransacao(int* total, int transacao, const char* tipo) {
     printf("Sua %s total eh de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
     transacao = lerValor(tipo);
     *total += transacao;
