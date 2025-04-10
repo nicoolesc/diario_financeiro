@@ -44,7 +44,7 @@ void limparTela();
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes);
 int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes);
 int lerValor(const char* tipo);
-void registrarTransacao(int* total, int* transacao, int categoria, const char* tipo);
+int registrarTransacao(int* total, int transacao, int categoria, const char* tipo);
 void exibirSaldo(int receita_total, int despesa_total);
 void exibirRelatorio(int receita_total, int despesa_total);
 void french();
@@ -92,14 +92,14 @@ int main() {
                 // Opções de categoria
                 const char* option [] = {
                     "BOLSA DE ESTUDOS",
-                    "ESTÁGIO NA STARTUP",
+                    "ESTAGIO EM STARTUP",
                     "MESADA DA MAMAE (ja convertido em CAD)",
                     "FREELANCE",
                     "OUTROS"   
                 };
                 int num_opcoes = 5; // Número de categorias
                 // Registrar a transação de despesa
-                registrarTransacao(&receita_total, &transacao, categoria, "RECEITA");
+                registrarTransacao(&receita_total, transacao, categoria, "RECEITA");
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -140,7 +140,7 @@ int main() {
                 };
                 int num_opcoes = 6; // Número de categorias
                 // Registrar a transação de despesa
-                registrarTransacao(&despesa_total, &transacao, categoria, "DESPESA");
+                registrarTransacao(&despesa_total, transacao, categoria, "DESPESA");
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -164,7 +164,7 @@ int main() {
             ○ O sistema deve permitir ao usuário cadastrar uma meta financeira mensal.*/
             limparTela();
             exibirSaldo(receita_total, despesa_total);                                   
-            printf("\n+_+_+_+_+_+_+_+_+ == META FINANCEIRA == +_+_+_+_+_+_+_+_+_+_+_\n"); 
+            
             printf("Deseja cadastrar uma meta financeira?\n");
             printf("Digite [ 1 ] para SIM || Digite [ 2 ] para Sair: ");
             scanf("%d", &subOpcao);
@@ -173,9 +173,9 @@ int main() {
                 int valor_meta;
                 printf("Qual eh o nome da meta?: ");
                 scanf(" %[^\n]", nome_meta);  // lê string com espaço
-                printf("\nE qual eh o valor da meta financeira (Ex: digite 190000 para 1900.00 CAD: ");
+                printf("\nE qual eh o valor da meta financeira (Ex: digite 190000 para $1900.00 CAD: ");
                 scanf("%d", &valor_meta);
-                printf("Meta '%s' cadastrada com valor de %i.%02i CAD.\n", nome_meta, valor_meta / 100, valor_meta % 100);
+                printf("Meta '%s' cadastrada com valor de $%i.%02i CAD.\n", nome_meta, valor_meta / 100, valor_meta % 100);
             }
             printf("  \n");
             printf("\n+_+_+_+_+_+_+_+_+ == META FINANCEIRA == +_+_+_+_+_+_+_+_+_+_+_\n"); 
@@ -271,10 +271,11 @@ int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes) {
 }
 
 // Função para registrar transações
-void registrarTransacao(int* total, int* transacao, int categoria, const char* tipo) {
+int registrarTransacao(int* total, int transacao, int categoria, const char* tipo) {
     printf("Sua %s total eh de $ %i.%02i CAD \n", tipo, *total / 100, *total % 100);
-    *transacao = lerValor(tipo);
-    *total += *transacao;
+    transacao = lerValor(tipo);
+    *total += transacao;
+    return transacao;
 }
 
 // Função para exibir o saldo
@@ -404,7 +405,7 @@ void english() {
             // Change Language (implemente a lógica para alterar idioma)
             break;
         case 6:
-            imparTela();
+            limparTela();
             printf("\n+=+=+=+=+=+=+=+=+=+=+=+=+=\nWait...\n");
             sleep(3);
             printf("\nA bientot ! Merci d'avoir interagi. Reviens quand tu veux.\n");
