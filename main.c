@@ -39,14 +39,21 @@ permitindo a continuidade do controle financeiro. (  )
 #include <unistd.h>
 #include <math.h>
 
+enum Idioma {
+    PORTUGUES,  // Valor 0
+    FRANCES,    // Valor 1
+    INGLES      // Valor 2
+};
+
 // Rol de funções (consultar declaração de cada uma delas no rodapé): 
 void limparTela();
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes);
 int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes);
 int lerValor(const char* tipo);
-void exibirTransacao(int* total, int transacao, const char* tipo);
+void exibirTransacao(int* total, int transacao, const char* tipo, enum Idioma idioma);
 void exibirSaldo(int receita_total, int despesa_total);
 void exibirRelatorio(int receita_total, int despesa_total);
+int lerEscolha(enum Idioma idioma);
 void french();
 void english();
 
@@ -54,7 +61,7 @@ int main() {
     int categoria = 0, option = 0, opcao = 0, transacao = 0;
     int num_opcoes = 6;
     int subOpcao = 1;
-    int receita_total = 0, receita = 0, despesa_total =0, despesa = 0;
+    int receita_total = 0, despesa_total = 0;
     const char* titulo = "Bem-vindo a sua CARTEIRA DIGITAL em Canadian Dollar.\nMenu Principal\nEscolha a opcao desejada:";
     const char* opcoes[] = {
         "Cadastrar Receita",
@@ -99,7 +106,7 @@ int main() {
                 };
                 int num_opcoes = 5; // Número de categorias
                 // Registrar a transação de despesa
-                exibirTransacao(&receita_total, transacao, "RECEITA");
+                exibirTransacao(&receita_total, transacao, "RECEITA", PORTUGUES);
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -140,7 +147,7 @@ int main() {
                 };
                 int num_opcoes = 6; // Número de categorias
                 // Registrar a transação de despesa
-                exibirTransacao(&despesa_total, transacao, "DESPESA");
+                exibirTransacao(&receita_total, transacao, "DESPESA", PORTUGUES);
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -151,8 +158,7 @@ int main() {
                     printf("Opcao invalida!\n");
                 }
                  // Pergunta ao usuário se ele quer continuar ou sair
-                printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
-                scanf("%i", &subOpcao);
+                subOpcao = lerEscolha(PORTUGUES);
                 
             }
             break;
@@ -271,8 +277,16 @@ int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes) {
 }
 
 // Função para registrar transações
-void exibirTransacao(int* total, int transacao, const char* tipo) {
-    printf("Sua %s total eh de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
+void exibirTransacao(int* total, int transacao, const char* tipo, enum Idioma idioma){
+    if (idioma == PORTUGUES){
+        printf("Sua %s total eh de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
+    } else if (idioma == FRANCES){
+        printf("Votre %s total est de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
+    } else if (idioma == INGLES) {
+        printf("Your total %s is $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
+    } else {
+        printf("ERROR.\n");       
+    }
     transacao = lerValor(tipo);
     *total += transacao;
 }
@@ -315,6 +329,41 @@ int lerValor(const char* tipo) {
     printf("Digite o valor da %s (ex: 750 para $7.50 CAD): ", tipo);
     scanf("%d", &valor);
     return valor;
+}
+int lerEscolha(enum Idioma idioma) {
+    int subOpcao = 0, leitura = 0;
+
+    while (1) {
+        // Mostra mensagem de acordo com o idioma
+        if (idioma == PORTUGUES) {
+            printf("Digite [ 1 ] para Continuar || Digite [ 2 ] para Sair: ");
+        } else if (idioma == FRANCES) {
+            printf("Entrez [ 1 ] pour Continuer || Entrez [ 2 ] pour Quitter: ");
+        } else if (idioma == INGLES) {
+            printf("Press [ 1 ] to Continue || Press [ 2 ] to Exit: ");
+        } else {
+            printf("Idioma invalido.\n");
+            return 1;
+        }
+
+        leitura = scanf("%i", &subOpcao);
+
+        // Validação
+        if (leitura != 1 || (subOpcao != 1 && subOpcao != 2)) {
+            if (idioma == PORTUGUES) {
+                printf("Opcao invalida. Tente novamente.\n");
+            } else if (idioma == FRANCES) {
+                printf("Option invalide. Veuillez rEessayer.\n");
+            } else if (idioma == INGLES) {
+                printf("Invalid option. Please try again.\n");
+            }
+            while (getchar() != '\n'); // limpa o buffer
+        } else {
+            break; // entrada válida
+        }
+    }
+
+    return subOpcao;
 }
 void french() {
     const char* titulo = "Bienvenue dans votre CARTE DIGITALE en Dollar Canadien.\nMenu Principal\nChoisissez l'option souhaitée:";
