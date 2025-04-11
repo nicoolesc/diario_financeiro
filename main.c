@@ -16,12 +16,13 @@ REPOSITÓRIO DO CÓDIGO: https://github.com/johnatanwillow/diario_financeiro
 
 3️⃣ Processamento das Opções
 
-Se [1] ou [2]: Solicitar informações da transação e armazenar no arquivo/binário/BD.
-Se [3]: Calcular saldo total (Receitas - Despesas).
-Se [4]: Exibir lista de transações e gerar gráficos ASCII ou arquivos CSV.
-Se [5]: Recria os menus em francês ou inglês conforme escolha do usuário.
-Se [6]: Salva e sai do programa com delay programado de 3s.
+Se [1] ou [2]: Solicitar informações da transação por categoria diária e mensalmente 
+{data, tipo, valor, descrição, categoria} (  ) e armazenar no arquivo/binário/BD (  ). 
+Se [3]: Calcular saldo total (Receitas versus Despesas diaria e mensalmente) (  ) e projetar uma META FINANCEIRA (  ).
+Se [4]: Exibir lista de transações {listando por dia específico e/ou mês específico} e gerar gráficos ASCII ou arquivos CSV (  ).
+Se [5]: Invoca os menus em francês ou inglês conforme escolha do usuário ( X ).
 4️⃣ Retornar ao menu ou sair do programa
+Se [6]: Salva {com persistência de dados} e sai do programa com delay programado de 3s (  ).
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  - Persistência de Dados
 ○ Todas as transações financeiras registradas devem ser armazenadas em um arquivo binário,
@@ -30,8 +31,8 @@ garantindo que os dados sejam preservados após o encerramento do programa. (  )
 permitindo a continuidade do controle financeiro. (  )
  - Requisitos Técnicos
 ● O sistema deve ser implementado em C. ( X )
-● O uso de structs, vetores, arquivos binários e ponteiros é obrigatório. ( )
-● O código deve ser modularizado, com funções bem definidas para cada operação do sistema. (  )
+● O uso de structs ( ), vetores ( ), arquivos binários ( ) e ponteiros (  ) é obrigatório. 
+● O código deve ser modularizado, com funções bem definidas para cada operação do sistema. ( X )
 ● O sistema deve interagir com o usuário via entrada e saída de texto no console. ( X )
 *******************************************************************************/
 #include <stdio.h>
@@ -151,7 +152,7 @@ int main() {
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
-                if (categoria >= 1 && categoria <= 6) {
+                if (categoria >= 1 && categoria <= num_opcoes) {
                     printf("\nSua conta atual possui X DESPESAS no montante de %i.%02i CAD \ncadastradas na categoria %i\n", despesa_total / 100, despesa_total % 100, categoria);
                     printf("  \n");
                 } else {
@@ -376,7 +377,6 @@ void french() {
         "Sauvegarder & Quitter"
     };
     int num_opcoes = 6;
-    
     int opcao = 0;
     while (opcao != 6) {
         exibirMenu(titulo, opcoes, num_opcoes);  // Chama a função exibirMenu com as opções em francês
@@ -385,13 +385,14 @@ void french() {
         scanf("%d", &opcao);
 
         // Aqui você pode manter o mesmo switch que está no seu código original para gerenciar as opções
-        // No caso de cada opção, você pode replicar a lógica que já está no código, com as traduções para francês.
         switch(opcao) {
         case 1:
             // Cadastrar Receita em francês
+            limparTela();          
             break;
         case 2:
             // Cadastrar Despesa em francês
+            limparTela();
             break;
         case 3:
             // Exibir Saldo em francês
@@ -439,6 +440,7 @@ void english() {
         switch(opcao) {
         case 1:
             // Register Income (implemente a lógica para cadastrar receita)
+            limparTela();
             break;
         case 2:
             // Register Expense (implemente a lógica para cadastrar despesa)
