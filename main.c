@@ -31,7 +31,7 @@ garantindo que os dados sejam preservados após o encerramento do programa. (  )
 permitindo a continuidade do controle financeiro. (  )
  - Requisitos Técnicos
 ● O sistema deve ser implementado em C. ( X )
-● O uso de structs ( ), vetores ( ), arquivos binários ( ) e ponteiros (  ) é obrigatório. 
+● O uso de structs ( ), vetores ( ), arquivos binários ( ) e ponteiros ( X ) é obrigatório. 
 ● O código deve ser modularizado, com funções bem definidas para cada operação do sistema. ( X )
 ● O sistema deve interagir com o usuário via entrada e saída de texto no console. ( X )
 *******************************************************************************/
@@ -39,30 +39,30 @@ permitindo a continuidade do controle financeiro. (  )
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
+#include <time.h>
 
 enum Idioma {
-    PORTUGUES,  // Valor 0
-    FRANCES,    // Valor 1
-    INGLES      // Valor 2
+    PORTUGUES,  
+    FRANCES,    
+    INGLES      
 };
-
 // Rol de funções (consultar declaração de cada uma delas no rodapé): 
 void limparTela();
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes);
 int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes);
-int lerValor(const char* tipo);
-void exibirTransacao(int* total, int transacao, const char* tipo, enum Idioma idioma);
+int lerValor(const char* tipo, enum Idioma idioma);
+void exibirTransacao(int* total, const char* tipo, enum Idioma idioma);
 void exibirSaldo(int receita_total, int despesa_total);
 void exibirRelatorio(int receita_total, int despesa_total);
 int lerEscolha(enum Idioma idioma);
 void french();
 void english();
 
+int categoria = 0, option = 0, opcao = 0, transacao = 0, receita_total = 0, despesa_total = 0;
+int num_opcoes = 6;
+int subOpcao = 1;
+
 int main() {
-    int categoria = 0, option = 0, opcao = 0, transacao = 0;
-    int num_opcoes = 6;
-    int subOpcao = 1;
-    int receita_total = 0, despesa_total = 0;
     const char* titulo = "Bem-vindo a sua CARTEIRA DIGITAL em Canadian Dollar.\nMenu Principal\nEscolha a opcao desejada:";
     const char* opcoes[] = {
         "Cadastrar Receita",
@@ -71,11 +71,9 @@ int main() {
         "Gerar Relatorio",
         "Alterar Idioma",
         "Salvar & Sair"
-    };
-    
-    opcao = 0;
-    while (opcao != 6) {
-        exibirMenu(titulo, opcoes, num_opcoes);      
+    };  
+    do {
+        exibirMenu(titulo, opcoes, num_opcoes);
         // Solicita a escolha do usuário
         printf("\nEscolha uma opcao: ");
         scanf("%d", &opcao);
@@ -103,11 +101,11 @@ int main() {
                     "ESTAGIO EM STARTUP",
                     "MESADA DA MAMAE (ja convertido em CAD)",
                     "FREELANCE",
-                    "OUTROS"   
+                    "OUTROS"
                 };
-                int num_opcoes = 5; // Número de categorias
+                int num_opcoes = 6; // Número de categorias
                 // Registrar a transação de despesa
-                exibirTransacao(&receita_total, transacao, "RECEITA", PORTUGUES);
+                exibirTransacao(&receita_total, "RECEITA", PORTUGUES);
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -144,11 +142,12 @@ int main() {
                     "ALUGUEL DO FLAT",
                     "ACADEMIA DO FLAT",
                     "BOATE",
-                    "OUTROS"   
+                    "OUTROS", 
+                    "NENHUM E RETORNAR"   
                 };
-                int num_opcoes = 6; // Número de categorias
+                int num_opcoes = 7; // Número de categorias
                 // Registrar a transação de despesa
-                exibirTransacao(&receita_total, transacao, "DESPESA", PORTUGUES);
+                exibirTransacao(&receita_total, "DESPESA", PORTUGUES);
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
@@ -188,7 +187,7 @@ int main() {
             printf("\n+_+_+_+_+_+_+_+_+ == META FINANCEIRA == +_+_+_+_+_+_+_+_+_+_+_\n"); 
             printf("  \n");
             printf("\nPressione Enter para continuar...\n");
-            while (getchar() != '\n');  // Limpar buffer
+            getchar();  // Limpar buffer
             getchar();  // Esperar Enter do usuário
             break;
         case 4:
@@ -203,7 +202,7 @@ int main() {
                 scanf("%d", &subOpcao);
             }
             break;
-               
+             
         case 5:        
             limparTela();
             printf("    [ 1 ] Francais\n");
@@ -211,34 +210,24 @@ int main() {
             printf("Choisissez/Choose: ");
             scanf("%d", &option);    
             
-            if(option == 1)
-                french();  // Chama diretamente a função french() para exibir o menu em francês
-            
-            else if(option == 2)
-                english(); // Chama diretamente a função english() para exibir o menu em inglês
-
-            break;
-
+            if(option == 1) { french(); break;}  // Chama diretamente a função french() para exibir o menu em francês
+            else if(option == 2){ english(); break;} // Chama diretamente a função english() para exibir o menu em inglês
         case 6:
             limparTela();
-            
             printf("\n+=+=+=+=+=+=+=+=+=+=+=+=+=\nAguarde...\n");
             sleep(3);
             printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
             printf("\nA bientot ! Merci d'avoir interagi. Reviens quand tu veux.\n");
             printf("\nSee you soon! Thanks for interacting. Come back anytime.\n");
-            
-            
             break;
         default:
             limparTela();
-            printf("OPCAO INVALIDA!");
-    }
-    }
+            printf("OPCAO INVALIDA!\a");
+        }
+    
+    }while (opcao != 6);
     return 0;
 }
-
-
 // Função que limpa a tela
 void limparTela() {
     #ifdef _WIN32
@@ -247,7 +236,6 @@ void limparTela() {
         system("clear");  // Para Linux/Mac
     #endif
 }
-
 // Função para exibir o menu
 void exibirMenu(const char* titulo, const char* opcoes[], int num_opcoes) {
     limparTela();
@@ -265,33 +253,26 @@ int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes) {
     for (int i = 0; i < num_opcoes; i++) {
         printf(" [ %d ] %s\n", i + 1, opcoes[i]);
     }
-
     while (1) {
         printf("Sua escolha: ");
         scanf("%d", &categoria);
-        if (categoria >= 1 && categoria <= num_opcoes) {
-            return categoria;
-        } else {
-            printf("Opção invalida! Tente novamente.\n");
-        }
+        if (categoria >= 1 && categoria <= num_opcoes) return categoria;
+        else printf("Opção invalida! Tente novamente.\n");        
     }
 }
-
 // Função para registrar transações
-void exibirTransacao(int* total, int transacao, const char* tipo, enum Idioma idioma){
+void exibirTransacao(int* total, const char* tipo, enum Idioma idioma){
+    int transacao = lerValor(tipo, idioma);
+    *total += transacao;
+
     if (idioma == PORTUGUES){
         printf("Sua %s total eh de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
     } else if (idioma == FRANCES){
         printf("Votre %s total est de $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
     } else if (idioma == INGLES) {
         printf("Your total %s is $%i.%02i CAD \n", tipo, *total / 100, *total % 100);
-    } else {
-        printf("ERROR.\n");       
-    }
-    transacao = lerValor(tipo);
-    *total += transacao;
+    }     
 }
-
 // Função para exibir o saldo
 void exibirSaldo(int receita_total, int despesa_total) {
     int saldo = receita_total - despesa_total;
@@ -305,15 +286,10 @@ void exibirSaldo(int receita_total, int despesa_total) {
     printf("| Saldo Final: $%s%i.%02i CAD  |\n", saldo < 0 ? "-" : " ", abs(saldo) / 100, abs(saldo) % 100);
     printf("+---------------------------+\n");
 
-    if (saldo > 0) {
-        printf("\nPARABENS! Voce esta no positivo!\n");
-    } else if (saldo < 0) {
-        printf("\nATENCAO! Voce esta no vermelho!\n");
-    } else {
-        printf("\nSeu saldo esta zerado.\n");
-    }
+    if (saldo > 0) printf("\nPARABENS! Voce esta no positivo!\n");
+    else if (saldo < 0) printf("\nATENCAO! Voce esta no vermelho!\n");
+    else printf("\nSeu saldo esta zerado.\n");
 }
-
 // Função para exibir relatório
 void exibirRelatorio(int receita_total, int despesa_total) {
     int saldo = receita_total - despesa_total;
@@ -323,14 +299,22 @@ void exibirRelatorio(int receita_total, int despesa_total) {
     printf("Total de Despesas: $%i.%02i CAD\n", despesa_total / 100, despesa_total % 100);
     printf("Saldo Final: $%i.%02i CAD\n", saldo / 100, saldo % 100);
 }
-
 // Função para ler o valor de uma transação
-int lerValor(const char* tipo) {
+int lerValor(const char* tipo, enum Idioma idioma) {
     int valor;
-    printf("Digite o valor da %s (ex: 750 para $7.50 CAD): ", tipo);
-    scanf("%d", &valor);
+            // Mostra mensagem de acordo com o idioma
+        if (idioma == PORTUGUES) {
+            printf("Digite o valor da %s (ex: 750 para $7.50 CAD): ", tipo);
+            scanf("%d", &valor);
+        } else if (idioma == FRANCES) {
+            printf("Digitez la valeur de la %s (ex: 750 pour $7.50 CAD): ", tipo);
+            scanf("%d", &valor);
+        } else if (idioma == INGLES) {
+            printf("Write the value of %s (ex: 750 to $7.50 CAD): ", tipo);
+            scanf("%d", &valor);
+        }
     return valor;
-}
+    }
 int lerEscolha(enum Idioma idioma) {
     int subOpcao = 0, leitura = 0;
 
@@ -342,31 +326,24 @@ int lerEscolha(enum Idioma idioma) {
             printf("Entrez [ 1 ] pour Continuer || Entrez [ 2 ] pour Quitter: ");
         } else if (idioma == INGLES) {
             printf("Press [ 1 ] to Continue || Press [ 2 ] to Exit: ");
-        } else {
-            printf("Idioma invalido.\n");
-            return 1;
         }
 
         leitura = scanf("%i", &subOpcao);
 
         // Validação
         if (leitura != 1 || (subOpcao != 1 && subOpcao != 2)) {
-            if (idioma == PORTUGUES) {
-                printf("Opcao invalida. Tente novamente.\n");
-            } else if (idioma == FRANCES) {
-                printf("Option invalide. Veuillez rEessayer.\n");
-            } else if (idioma == INGLES) {
-                printf("Invalid option. Please try again.\n");
-            }
+            if (idioma == PORTUGUES) printf("Opcao invalida. Tente novamente.\n");
+            else if (idioma == FRANCES) printf("Option invalide. Veuillez rEessayer.\n");
+            else if (idioma == INGLES) printf("Invalid option. Please try again.\n");
             while (getchar() != '\n'); // limpa o buffer
         } else {
             break; // entrada válida
         }
     }
-
     return subOpcao;
 }
 void french() {
+
     const char* titulo = "Bienvenue dans votre CARTE DIGITALE en Dollar Canadien.\nMenu Principal\nChoisissez l'option souhaitée:";
     const char* opcoes[] = {
         "Enregistrer un revenu",
@@ -380,19 +357,44 @@ void french() {
     int opcao = 0;
     while (opcao != 6) {
         exibirMenu(titulo, opcoes, num_opcoes);  // Chama a função exibirMenu com as opções em francês
-        // Solicita a escolha do usuário
+        printf("\a");// Solicita a escolha do usuário
         printf("\nChoisissez une option: ");
         scanf("%d", &opcao);
 
-        // Aqui você pode manter o mesmo switch que está no seu código original para gerenciar as opções
         switch(opcao) {
         case 1:
             // Cadastrar Receita em francês
             limparTela();          
             break;
         case 2:
-            // Cadastrar Despesa em francês
+            // Enregistrer une dépense en français
+            subOpcao = 1;
+        while (subOpcao != 2) {
             limparTela();
+            printf("+_+== PORTEFEUILLE NUMÉRIQUE ==+_+_\n");
+            const char* titre = "Quelle est la catégorie de la dépense? \n";
+            const char* options[] = {
+                "RESTAURANT 'LE BOIS DU BOIS'",
+                "TRANSPORT UBER",
+                "LOYER DU FLAT",
+                "SALLE DE SPORT",
+                "BOÎTE DE NUIT",
+                "AUTRES"
+            };
+            int num_options = 6;
+    
+            exibirTransacao(&despesa_total, "DEPENSE", FRANCES);
+            categoria = entradaSaida(titre, options, num_options);
+    
+            if (categoria >= 1 && categoria <= num_options) {
+                printf("\nVotre compte contient actuellement X DÉPENSES d’un montant de %i.%02i CAD \nenregistrées dans la catégorie %i\n", despesa_total / 100, despesa_total % 100, categoria);
+                printf("  \n");
+            } else {
+                printf("Option invalide!\n\a");
+            }
+    
+            subOpcao = lerEscolha(FRANCES);
+        }
             break;
         case 3:
             // Exibir Saldo em francês
@@ -411,9 +413,9 @@ void french() {
             printf("\nSee you soon! Thanks for interacting. Come back anytime.\n");
             printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
             break;
-            
         default:
-            printf("Option invalide!\n");
+            printf("Option invalide!\n\a");
+            
         }
     }
 }
@@ -463,7 +465,7 @@ void english() {
             printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
             break;
         default:
-            printf("Invalid option!\n");
+            printf("Invalid option!\n\a");                   
         }
     }
 }
