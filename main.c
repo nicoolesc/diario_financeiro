@@ -147,7 +147,7 @@ int main() {
                 };
                 int num_opcoes = 7; // Número de categorias
                 // Registrar a transação de despesa
-                exibirTransacao(&receita_total, "DESPESA", PORTUGUES);
+                exibirTransacao(&despesa_total, "DESPESA", PORTUGUES);
                 // Ler a categoria de despesa
                 categoria = entradaSaida(titulo, option, num_opcoes);  
                 // Verificar se a categoria é válida e exibir saldo da despesa
