@@ -59,8 +59,8 @@ void french();
 void english();
 
 int categoria = 0, option = 0, opcao = 0, transacao = 0, receita_total = 0, despesa_total = 0;
-int subOpcao;
-int num_opcoes;
+int subOpcao = 0 ;
+int num_opcoes = 6;
 int main() { /********************************[ INICIO DO MAIN ]***********************************************************************/
     const char* titulo = "Bem-vindo a sua CARTEIRA DIGITAL em Canadian Dollar.\nMenu Principal\nEscolha a opcao desejada:";
     const char* opcoes[] = {
