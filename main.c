@@ -57,6 +57,7 @@ void exibirRelatorio(int receita_total, int despesa_total);
 int lerEscolha(enum Idioma idioma);
 void french();
 void english();
+void beep();
 
 int categoria = 0, option = 0, opcao = 0, transacao = 0, receita_total = 0, despesa_total = 0;
 int subOpcao = 0 ;
@@ -209,7 +210,8 @@ int main() { /********************************[ INICIO DO MAIN ]****************
             break;
         default:
             limparTela();
-            printf("OPCAO INVALIDA!\a");
+            printf("OPCAO INVALIDA!");
+            beep();
         }    
     }while (opcao != 6);
     return 0; 
@@ -243,9 +245,14 @@ int entradaSaida(const char* titulo, const char* opcoes[], int num_opcoes) {
         printf("Sua escolha: ");
         scanf("%d", &categoria);
         if (categoria >= 1 && categoria <= num_opcoes) return categoria;
-        else printf("Opção invalida! Tente novamente.\n");        
+        else printf("Opção invalida! Tente novamente.\n");
+           beep();
     }
-}
+} 
+// Função para criar um som ao ser digitado algo inválido 
+ void beep(){
+    printf("\a");
+ }
 // Função para registrar transações
 void exibirTransacao(int valor, int* total, const char* tipo, enum Idioma idioma){
     *total += valor;  // Atualiza o total com o valor da transação
@@ -378,7 +385,8 @@ void french() {
                 printf("\nVotre compte contient actuellement X DÉPENSES d’un montant de %i.%02i CAD \nenregistrées dans la catégorie %i\n", despesa_total / 100, despesa_total % 100, categoria);
                 printf("  \n");
             } else {
-                printf("Option invalide!\n\a");
+                printf("Option invalide!\n");
+                 beep();
             }    
             subOpcao = lerEscolha(FRANCES);
         }
@@ -401,7 +409,8 @@ void french() {
             printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
             break;
         default:
-            printf("Option invalide!\n\a");
+            printf("Option invalide!\n");
+             beep();
         }
     }
 }
@@ -450,7 +459,8 @@ void english() {
             printf("\nAte mais! Obrigado por interagir. Volte sempre!\n");
             break;
         default:
-            printf("Invalid option!\n\a");                   
+            printf("Invalid option!\n");
+             beep();
         }
     }
 }
